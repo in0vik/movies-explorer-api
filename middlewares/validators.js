@@ -1,10 +1,17 @@
 const { celebrate, Joi } = require("celebrate");
-const { regex } = require("./config/constants");
+const { regex } = require("../config/constants");
 
 module.exports.validateUserData = celebrate({
   body: Joi.object().keys({
     email: Joi.string().email().required(),
     name: Joi.string().min(2).max(30).required(),
+  })
+})
+
+module.exports.validateAuthData = celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().email({ tlds: { allow: false } }),
+    password: Joi.string().required(),
   })
 })
 
@@ -15,8 +22,8 @@ module.exports.validateMovieData = celebrate({
     duration: Joi.number().required(),
     year: Joi.string().required(),
     description: Joi.string().required(),
-    image: Joi.string().is.required().regex(regex.link),
-    trailer: Joi.string().required().regex(regex.link),
+    image: Joi.string().required().regex(regex.link),
+    trailerLink: Joi.string().required().regex(regex.link),
     nameRU: Joi.string().required(),
     nameEN: Joi.string().required(),
     thumbnail: Joi.string().required().regex(regex.link),
@@ -26,6 +33,6 @@ module.exports.validateMovieData = celebrate({
 
 module.exports.validateMovieId = celebrate({
   params: Joi.object().keys({
-    id: Joi.string().required(),
+    movieId: Joi.string().required(),
   })
 });
