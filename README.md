@@ -1,6 +1,6 @@
 # Movies Explorer API
 
-API for Movies Explorer API project
+API for Movies Explorer project
 ## Technologies
 
 - NodeJS
