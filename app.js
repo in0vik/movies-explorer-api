@@ -37,5 +37,5 @@ app.use('*', auth, (req, res, next) => {
 app.use(celebrateErrors());
 app.use(errorHandler);
 app.listen(PORT, () => {
-  console.log('rabotaet');
+  console.log(`App is listening port: ${PORT}`);
 })
