@@ -42,7 +42,7 @@ module.exports.createMovie = (req, res, next) => {
     .then((movie) => res.send(movie))
     .catch((err) => {
       if (err.name === "ValidationError") {
-        throw new BadRequestError("Invalid input during creation of movie");
+        next(new BadRequestError("Invalid input during creation of movie"));
       } else {
         next(err);
       }
@@ -68,7 +68,7 @@ module.exports.deleteMovie = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === "CastError") {
-        throw new BadRequestError("Invalid data");
+        next(new BadRequestError("Invalid data"));
       } else {
         next(err);
       }

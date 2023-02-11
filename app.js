@@ -2,22 +2,39 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const cookieParser = require('cookie-parser');
+const ms = require("ms");
+const helmet = require("helmet");
 const NotFoundError = require('./errors/NotFoundError');
-const { errors } = require("celebrate");
+const rateLimit = require('express-rate-limit');
+const { errors: celebrateErrors } = require("celebrate");
 const { PORT, DB_ADDRESS } = require("./config/config");
 const { mongoose } = require("mongoose");
 const routes = require("./routes");
 const auth = require("./middlewares/auth");
+const { requestLogger, errorLogger } = require('./middlewares/logger');
+const cors = require('./middlewares/cors');
 const errorHandler = require("./middlewares/errorHandler");
+
+const limiter = rateLimit({
+  windowMs: ms('15m'),
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+app.use(requestLogger);
+app.use(limiter);
+app.use(helmet());
 
 mongoose.connect(DB_ADDRESS);
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(cors);
 app.use(routes);
+app.use(errorLogger);
 app.use('*', auth, (req, res, next) => {
-  next(new NotFoundError('Страница не найдена'));
+  next(new NotFoundError('Page Not Found'));
 });
-app.use(errors());
+app.use(celebrateErrors());
 app.use(errorHandler);
 app.listen(PORT, () => {
   console.log('rabotaet');

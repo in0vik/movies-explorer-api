@@ -13,5 +13,4 @@ routes.use('/signup', createUserRoutes);
 routes.use('/users', auth, usersRoutes);
 routes.use('/movies', auth, moviesRoutes);
 
-
 module.exports = routes;
