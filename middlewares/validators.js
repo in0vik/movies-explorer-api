@@ -1,20 +1,31 @@
-const { celebrate, Joi } = require("celebrate");
-const { regex } = require("../config/constants");
+const { celebrate, Joi } = require('celebrate');
+const { regex } = require('../config/constants');
 
 module.exports.validateUserData = celebrate({
   body: Joi.object().keys({
     email: Joi.string().email().required(),
     name: Joi.string().min(2).max(30).required(),
-  })
-})
+  }),
+});
 
-module.exports.validateAuthData = celebrate({
+module.exports.validateSignUpData = celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30).required(),
-    email: Joi.string().required().email({ tlds: { allow: false } }),
+    email: Joi.string()
+      .required()
+      .email({ tlds: { allow: false } }),
     password: Joi.string().required(),
-  })
-})
+  }),
+});
+
+module.exports.validateSignInData = celebrate({
+  body: Joi.object().keys({
+    email: Joi.string()
+      .required()
+      .email({ tlds: { allow: false } }),
+    password: Joi.string().required(),
+  }),
+});
 
 module.exports.validateMovieData = celebrate({
   body: Joi.object().keys({
@@ -29,11 +40,11 @@ module.exports.validateMovieData = celebrate({
     nameEN: Joi.string().required(),
     thumbnail: Joi.string().required().regex(regex.link),
     movieId: Joi.string().required(),
-  })
+  }),
 });
 
 module.exports.validateMovieId = celebrate({
   params: Joi.object().keys({
     movieId: Joi.string().required(),
-  })
+  }),
 });

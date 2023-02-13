@@ -1,11 +1,11 @@
-const express = require("express");
+const express = require('express');
 
 const routes = express.Router();
-const { signinRoutes } = require("./login");
-const { createUserRoutes } = require("./createUser");
-const { usersRoutes } = require("./users");
-const { moviesRoutes } = require("./movies");
-const auth = require("../middlewares/auth");
+const { signinRoutes } = require('./login');
+const { createUserRoutes } = require('./createUser');
+const { usersRoutes } = require('./users');
+const { moviesRoutes } = require('./movies');
+const auth = require('../middlewares/auth');
 
 routes.use('/signin', signinRoutes);
 routes.use('/signout', signinRoutes);

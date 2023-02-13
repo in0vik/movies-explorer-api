@@ -1,4 +1,4 @@
-const STATUS_CODE = require("../errors/errorCodes");
+const STATUS_CODE = require('../errors/errorCodes');
 
 const errorHandler = (err, req, res, next) => {
   if (err.statusCode) {
@@ -7,6 +7,6 @@ const errorHandler = (err, req, res, next) => {
     res.status(STATUS_CODE.serverError).send({ message: 'Server error' });
   }
   next();
-}
+};
 
 module.exports = errorHandler;

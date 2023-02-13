@@ -1,19 +1,20 @@
-const express = require("express");
+const express = require('express');
+
 const app = express();
-const bodyParser = require("body-parser");
+const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const ms = require("ms");
-const helmet = require("helmet");
-const NotFoundError = require('./errors/NotFoundError');
+const ms = require('ms');
+const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
-const { errors: celebrateErrors } = require("celebrate");
-const { PORT, DB_ADDRESS } = require("./config/config");
-const { mongoose } = require("mongoose");
-const routes = require("./routes");
-const auth = require("./middlewares/auth");
+const { errors: celebrateErrors } = require('celebrate');
+const { mongoose } = require('mongoose');
+const { PORT, DB_ADDRESS } = require('./config/config');
+const NotFoundError = require('./errors/NotFoundError');
+const routes = require('./routes');
+const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const cors = require('./middlewares/cors');
-const errorHandler = require("./middlewares/errorHandler");
+const errorHandler = require('./middlewares/errorHandler');
 
 const limiter = rateLimit({
   windowMs: ms('15m'),
@@ -38,4 +39,4 @@ app.use(celebrateErrors());
 app.use(errorHandler);
 app.listen(PORT, () => {
   console.log(`App is listening port: ${PORT}`);
-})
+});

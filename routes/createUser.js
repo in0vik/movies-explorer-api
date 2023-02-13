@@ -1,7 +1,7 @@
 const createUserRoutes = require('express').Router();
 const { createUser } = require('../controllers/users');
-const { validateAuthData } = require('../middlewares/validators');
+const { validateSignUpData } = require('../middlewares/validators');
 
-createUserRoutes.post('/', validateAuthData, createUser);
+createUserRoutes.post('/', validateSignUpData, createUser);
 
 exports.createUserRoutes = createUserRoutes;
