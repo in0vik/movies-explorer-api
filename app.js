@@ -4,9 +4,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const ms = require('ms');
 const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
 const { errors: celebrateErrors } = require('celebrate');
 const { mongoose } = require('mongoose');
 const { PORT, DB_ADDRESS } = require('./config/config');
@@ -16,13 +14,8 @@ const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const cors = require('./middlewares/cors');
 const errorHandler = require('./middlewares/errorHandler');
+const limiter = require('./middlewares/rateLimiter');
 
-const limiter = rateLimit({
-  windowMs: ms('15m'),
-  max: 100,
-  standardHeaders: true,
-  legacyHeaders: false,
-});
 app.use(requestLogger);
 app.use(limiter);
 app.use(helmet());
