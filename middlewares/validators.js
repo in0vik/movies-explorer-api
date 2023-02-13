@@ -10,6 +10,7 @@ module.exports.validateUserData = celebrate({
 
 module.exports.validateAuthData = celebrate({
   body: Joi.object().keys({
+    name: Joi.string().min(2).max(30).required(),
     email: Joi.string().required().email({ tlds: { allow: false } }),
     password: Joi.string().required(),
   })

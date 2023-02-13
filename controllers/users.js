@@ -76,12 +76,12 @@ module.exports.signIn = (req, res, next) => {
   Users.findOne({ email }).select('+password')
   .then((user) => {
     if (!user) {
-      return next(new UnauthorizedError('Непрвильная почта или пароль'));
+      return next(new UnauthorizedError('Inavlid credentials'));
     }
     return bcrypt.compare(password, user.password)
       .then((isMatch) => {
         if (!isMatch) {
-          return next(new UnauthorizedError('Непрвильная почта или пароль'));
+          return next(new UnauthorizedError('Inavlid credentials'));
         }
         const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: '7d' });
         res.cookie('jwt', token, {
@@ -98,6 +98,6 @@ module.exports.signIn = (req, res, next) => {
 }
 
 module.exports.signOut = (req, res, next) => {
-  res.clearCookie('jwt').send({message: 'Выход'})
+  res.clearCookie('jwt').send({message: 'Sign out'})
   .catch(next);
 }
