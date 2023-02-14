@@ -30,5 +30,5 @@ API for Movies Explorer project
 
 ## References
 - Server public IP address - 84.201.152.207
-- Server domain - https://does.nomoredomains.work
+- Server domain - https://does.nomoredomains.work/api
 

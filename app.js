@@ -8,9 +8,7 @@ const helmet = require('helmet');
 const { errors: celebrateErrors } = require('celebrate');
 const { mongoose } = require('mongoose');
 const { PORT, DB_ADDRESS } = require('./config/config');
-const NotFoundError = require('./errors/NotFoundError');
 const routes = require('./routes');
-const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const cors = require('./middlewares/cors');
 const errorHandler = require('./middlewares/errorHandler');
@@ -26,9 +24,6 @@ app.use(cookieParser());
 app.use(cors);
 app.use(routes);
 app.use(errorLogger);
-app.use('*', auth, (req, res, next) => {
-  next(new NotFoundError('Page Not Found'));
-});
 app.use(celebrateErrors());
 app.use(errorHandler);
 app.listen(PORT, () => {

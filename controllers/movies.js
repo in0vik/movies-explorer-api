@@ -1,3 +1,4 @@
+const { statusCodes } = require('../config/constants');
 const BadRequestError = require('../errors/BadRequestError');
 const FrobiddenError = require('../errors/ForbiddenError');
 const NotFoundError = require('../errors/NotFoundError');
@@ -41,8 +42,8 @@ module.exports.createMovie = (req, res, next) => {
   })
     .then((movie) => res.send(movie))
     .catch((err) => {
-      if (err.name === 'ValidationError') {
-        next(new BadRequestError('Invalid input during creation of movie'));
+      if (err.name === statusCodes.badRequest.name.movie) {
+        next(new BadRequestError(statusCodes.badRequest.message.movie));
       } else {
         next(err);
       }
@@ -51,9 +52,10 @@ module.exports.createMovie = (req, res, next) => {
 
 module.exports.deleteMovie = (req, res, next) => {
   const { movieId } = req.params;
+
   Movies.findById(movieId)
     .orFail(() => {
-      throw new NotFoundError('No item with that _id');
+      throw new NotFoundError(statusCodes.notFound.message.movie);
     })
     .then((movieItem) => {
       if (req.user._id === movieItem.owner.toString()) {
@@ -63,12 +65,12 @@ module.exports.deleteMovie = (req, res, next) => {
           })
           .catch(next);
       } else {
-        throw FrobiddenError('No permission to delete this item');
+        throw new FrobiddenError(statusCodes.forbidden.message.movie);
       }
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
-        next(new BadRequestError('Invalid data'));
+      if (err.name === statusCodes.badRequest.name.movie) {
+        next(new BadRequestError(statusCodes.badRequest.message.movie));
       } else {
         next(err);
       }
