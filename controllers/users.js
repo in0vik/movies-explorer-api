@@ -28,7 +28,7 @@ module.exports.getCurrentUser = (req, res, next) => {
 
 module.exports.updateCurrentUser = (req, res, next) => {
   const { email, name } = req.body;
-  Users.findByIdAndUpdate(req.user._id, { email, name }, { new: true })
+  Users.findByIdAndUpdate(req.user._id, { email, name }, { new: true, runValidators: true })
     .orFail(() => {
       throw new NotFoundError(statusCodes.notFound.message.user);
     })
@@ -39,7 +39,7 @@ module.exports.updateCurrentUser = (req, res, next) => {
       if (err.code === 11000) {
         next(new ConflictError(statusCodes.conflict.message.user));
       } else if (err.name === statusCodes.conflict.name) {
-        next(new BadRequestError(statusCodes.badRequest.message.user));
+        next(new BadRequestError(`${statusCodes.badRequest.message.user}: "${err.message}`));
       } else {
         next(err);
       }
@@ -60,7 +60,7 @@ module.exports.createUser = (req, res, next) => {
       if (err.code === 11000) {
         next(new ConflictError(statusCodes.userExists.message.default));
       } else if (err.name === statusCodes.conflict.name) {
-        next(new BadRequestError(statusCodes.badRequest.message.user));
+        next(new BadRequestError(`${statusCodes.badRequest.message.user}: "${err.message}`));
       } else {
         next(err);
       }

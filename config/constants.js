@@ -50,6 +50,8 @@ module.exports.statusCodes = {
     message: {
       default: 'Unauthorized',
       user: 'Invalid credentials',
+      login: 'Login required',
+      token: 'Invalid token',
     },
     statusCode: 401,
   },
